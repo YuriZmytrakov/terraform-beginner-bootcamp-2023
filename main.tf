@@ -1,19 +1,3 @@
-
-#this is my first change
-
-terraform {
-  required_providers {
-    random = {
-      source = "hashicorp/random"
-      version = "3.5.1"
-    }
-    aws = {
-      source = "hashicorp/aws"
-      version = "5.41.0"
-    }
-  }
-}
-
 resource "random_string" "bucket_name" {
     lower = true
     upper = false
@@ -23,16 +7,9 @@ resource "random_string" "bucket_name" {
 
 resource "aws_s3_bucket" "example" {
     bucket = random_string.bucket_name.result
+
+    tags = {
+      UserUuid = var.user_uuid
+  }
 }
 
-output "random_bucket_name" {
-    value = random_string.bucket_name.result
-}
-
-provider "aws" {
-  # Configuration options
-}
-
-provider "random" {
-  # Configuration options
-}
