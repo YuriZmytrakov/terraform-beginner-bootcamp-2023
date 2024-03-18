@@ -7,3 +7,13 @@ variable "user_uuid" {
     error_message = "The UUID value is not valid"
   }
 }
+
+variable "bucket_name" {
+  description = "The name of the S3 bucket"
+  type        = string
+
+  validation {
+    condition     = can(regex("^([a-z0-9-.]+)$", var.bucket_name))
+    error_message = "The bucket name must contain only lowercase letters, numbers, hyphens, and periods."
+  }
+}
