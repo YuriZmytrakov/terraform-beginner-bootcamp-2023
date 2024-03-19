@@ -17,4 +17,6 @@ module "terrahouse_aws" {
   # index_html_filepath = var.index_html_filepath
   index_html_filepath = "${path.root}/public/index.html"
 
+  content_version = var.content_version
+  
 }
