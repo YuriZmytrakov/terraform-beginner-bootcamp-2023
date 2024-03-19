@@ -80,3 +80,18 @@ resource "aws_s3_bucket_policy" "bucket_policy" {
 resource "terraform_data" "content_version" {
   input = var.content_version
 }
+
+# fileset("${path.root}/public/assets/" ,"*.{jpg,png}")
+
+resource "aws_s3_object" "upload_assets" {
+  for_each = fileset("${path.root}/public/assets/", "*.{jpg,png,gif}")
+  bucket   = aws_s3_bucket.website_bucket.bucket
+  key      = "assets/${each.key}"
+  source   = "${path.root}/public/assets/${each.key}"
+  etag     = filemd5("${path.root}/public/assets/${each.key}")
+
+  lifecycle {
+    prevent_destroy = true
+    ignore_changes  = [etag]
+  }
+}
