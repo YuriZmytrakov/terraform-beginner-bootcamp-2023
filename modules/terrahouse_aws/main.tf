@@ -10,47 +10,4 @@ terraform {
 # provider "aws" {
 # }
 
-resource "aws_s3_bucket" "website_bucket" {
-    bucket = var.bucket_name
-
-    tags = {
-      UserUuid = var.user_uuid
-  }
-}
-
-
-resource "aws_s3_bucket_website_configuration" "website_configuration" {
-  bucket = aws_s3_bucket.website_bucket.bucket
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
-}
-
-resource "aws_s3_object" "index_html" {
-  bucket = aws_s3_bucket.website_bucket.bucket
-  key    = "index.html"
-  # source = "${path.root}/public/index.html"
-  source = var.index_html_filepath
-
-  # The filemd5() function is available in Terraform 0.11.12 and later
-  # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
-  # etag = filemd5("${path.root}/public/index.html")
-  etag = filemd5(var.index_html_filepath)
-}
-
-resource "aws_s3_object" "error_html" {
-  bucket = aws_s3_bucket.website_bucket.bucket
-  key    = "error.html"
-  # source = "${path.root}/public/error.html"
-  source = var.error_html_filepath
-
-  # The filemd5() function is available in Terraform 0.11.12 and later
-  # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
-  # etag = filemd5("${path.root}/public/error.html")
-  etag = var.error_html_filepath
-}
+data "aws_caller_identity" "current" {}
