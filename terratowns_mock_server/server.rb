@@ -9,13 +9,24 @@ class Home
   include ActiveModel::Validations
   attr_accessor :town, :name, :description, :domain_name, :content_version
 
-  validates :town, presence: true
+  validates :town, presence: true, inclusion: { in: [
+    'melomaniac-mansion',
+    'cooker-cove',
+    'video-valley',
+    'the-nomad-pad',
+    'gamers-grotto'
+  ] }
+  # visible to all users
   validates :name, presence: true
+  # visible to all users
   validates :description, presence: true
+  # we want to lock this down to only be from cloudfront
   validates :domain_name, 
     format: { with: /\.cloudfront\.net\z/, message: "domain must be from .cloudfront.net" }
     # uniqueness: true, 
 
+  # content version has to be an integer
+  # we will make sure it an incremental version in the controller.
   validates :content_version, numericality: { only_integer: true }
 end
 
@@ -159,7 +170,7 @@ class TerraTownsMockServer < Sinatra::Base
     home.town = $home[:town]
     home.name = name
     home.description = description
-    home.domain_name = domain_name
+    home.domain_name = $home[:domain_name]
     home.content_version = content_version
 
     unless home.valid?
@@ -180,8 +191,10 @@ class TerraTownsMockServer < Sinatra::Base
       error 404, "failed to find home with provided uuid and bearer token"
     end
 
+    # delete from mock database
+    uuid = $home[:uuid]
     $home = {}
-    { message: "House deleted successfully" }.to_json
+    { uuid: uuid }.to_json
   end
 end
 
