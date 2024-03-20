@@ -29,7 +29,7 @@ resource "aws_s3_object" "index_html" {
 
 
   # The filemd5() function is available in Terraform 0.11.12 and later
-  # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
+  # For Terraform 0.11.11 and earlier, use the md5() function and the file() function: 
   # etag = filemd5("${path.root}/public/index.html")
   etag = filemd5("${path.root}${var.index_html_filepath}")
   lifecycle {
