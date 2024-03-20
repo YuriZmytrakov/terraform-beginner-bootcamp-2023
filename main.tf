@@ -1,8 +1,25 @@
+# terraform {
+#   cloud {
+#     organization = "yurizmytrakov"
+#     workspaces {
+#       name = "terra-house-1"
+#     }
+#   }
+# }
+
 terraform {
+  #backend "remote" {
+  #  hostname = "app.terraform.io"
+  #  organization = "yurizmytrakov"
+
+  #  workspaces {
+  #    name = "terra-house-1"
+  #  }
+  #}
   cloud {
     organization = "yurizmytrakov"
     workspaces {
-      name = "terra-house-1"
+      name = "terraform-cloud"
     }
   }
 }
