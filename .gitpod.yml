@@ -8,7 +8,7 @@ tasks:
       cp $PROJECT_ROOT/terraform.tfvars.example $PROJECT_ROOT/terraform.tfvars
   - name: sinatra
     before: |
-      cd terratown_mock_server 
+      cd terratowns_mock_server 
       bundle install
       bundle exec ruby server.rb
   - name: aws-cli
